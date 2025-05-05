@@ -50,16 +50,24 @@ heart attacks.
 ### Feature Engineering -->
 
 ## **Exploratory Data Analysis**
+Here is a sample of what the patient data looks like:
+
+|    |   Age |   Gender |   Heart rate |   Systolic blood pressure |   Diastolic blood pressure |   Blood sugar |   CK-MB |   Troponin | Result   | Risk_Level   | Recommendation                     |
+|---:|------:|---------:|-------------:|--------------------------:|---------------------------:|--------------:|--------:|-----------:|:---------|:-------------|:-----------------------------------|
+|  0 |    63 |        1 |           66 |                       160 |                         83 |           160 |    1.8  |      0.012 | negative | Moderate     | Monitor closely and consult doctor |
+|  1 |    20 |        1 |           94 |                        98 |                         46 |           296 |    6.75 |      1.06  | positive | High         | Immediate medical attention        |
+|  2 |    56 |        1 |           64 |                       160 |                         77 |           270 |    1.99 |      0.003 | negative | Moderate     | Monitor closely and consult doctor |
+|  3 |    66 |        1 |           70 |                       120 |                         55 |           270 |   13.87 |      0.122 | positive | High         | Immediate medical attention        |
+|  4 |    54 |        1 |           64 |                       112 |                         65 |           300 |    1.08 |      0.003 | negative | Moderate     | Monitor closely and consult doctor |
+
 The first thing that I wanted to do was look at to see if I could determine any patterns within the dataset by creating some visualizations.
 
-The first thing I did when starting my analysis was breaking the dataset into male and female patients. Aggregating the data showed that in this sample population, the percent of male patients who had a heart attack was 66.5%, whereas female patients who had a heart attack was 55%:
+The first thing I did when starting my analysis was breaking the dataset into male and female patients. Aggregating the data showed that in this sample population, the percent of male patients who had a heart attack was 65%, whereas female patients who had a heart attack was 55%:
 
 | Gender   |   Proportion of Positive Heart attack |
 |:---------|--------------------------------------:|
-| Male     |                              0.647126 |
-| Female   |                              0.550111 |
-
-As a result, I decided to mainly look at male patients when looking at various trends and patterns in the dataset. 
+| Male     |                                64.72% |
+| Female   |                                55.01% |
 
 The first thing I decided to look at was the systolic blood pressure in patients and if there was any correlation to age and/or heart attacks. Below is a visualization depicting the data:
 
@@ -75,32 +83,45 @@ frameborder="0"
 
 At first we may identify the larger density of points between the 45 and 65 years. We do not see much of a correlation between age ***or*** heart attack results when looking at the systolic blood pressure. 
 
-Below is a figure containing troponin levels for males who had a heart attack, and those who did not.
+Next was looking at trends in patient's troponin levels. Below is a figure containing troponin levels for males who had a heart attack, and those who did not.
 
 <iframe
 src="assets/htmls/male_subplot_fig.html"
 width="1100"
-height="800"
+height="700"
 frameborder="0"
 >
 </iframe>
 <figcaption align="center"><em>Troponin Levels in Male Patients</em></figcaption>
 <br>
  
-The goal of this visualization was to determine if there was any correlation in troponin levels and age, alongside looking at the average troponin level in male patients with heart attacks, and those without. As seen by the visualization, there is no immediate connection between troponin level and age, but there is a clear connection between troponin level and heart attack. This finding reinforces our understanding of troponin as a protein that is released when the heart muscle is damaged. 
+As seen by the visualization, there is no immediate connection between troponin level and age, but there is a clear connection between troponin level and heart attack. This finding reinforces our understanding of troponin as a protein that is released when the heart muscle is damaged. 
 
 Below is a figure for troponine levels in female patients as well, with equal findings.
 
 <iframe
 src="assets/htmls/female_subplot_fig.html"
 width="1100"
-height="800"
+height="700"
 frameborder="0"
 >
 </iframe>
 <figcaption align="center"><em>Troponin Levels in Female Patients</em></figcaption>
 <br>
 
+I also decided to look at CK-MB levels as well:
+
+<iframe
+src="assets/htmls/male_CKMB.html"
+width="1100"
+height="700"
+frameborder="0"
+>
+</iframe>
+<figcaption align="center"><em>CK-MB Levels in Male Patients</em></figcaption>
+<br>
+
+This visualization also showcases the pattern of increased CK-MB levels in patients with heart attacks, and lower levels with those who have not had heart attacks.
 
 ## **Framing a Prediction Problem**
 
