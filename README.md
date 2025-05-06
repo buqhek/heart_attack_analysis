@@ -69,10 +69,12 @@ The first thing I did when starting my analysis was breaking the dataset into ma
 | Male     |                                64.72% |
 | Female   |                                55.01% |
 
+--- 
+
 The first thing I decided to look at was the systolic blood pressure in patients and if there was any correlation to age and/or heart attacks. Below is a visualization depicting the data:
 
 <iframe
-src="assets/htmls/male_systolic_blood_pressure.html"
+src="assets/plotly_figures/male_systolic_blood_pressure.html"
 width="800"
 height="600"
 frameborder="0"
@@ -83,12 +85,14 @@ frameborder="0"
 
 At first we may identify the larger density of points between the 45 and 65 years. We do not see much of a correlation between age ***or*** heart attack results when looking at the systolic blood pressure. 
 
+---
+
 Next was looking at trends in patient's troponin levels. Below is a figure containing troponin levels for males who had a heart attack, and those who did not.
 
 <iframe
-src="assets/htmls/male_subplot_fig.html"
+src="assets/plotly_figures/male_subplot_fig.html"
 width="1100"
-height="700"
+height="800"
 frameborder="0"
 >
 </iframe>
@@ -100,21 +104,23 @@ As seen by the visualization, there is no immediate connection between troponin 
 Below is a figure for troponine levels in female patients as well, with equal findings.
 
 <iframe
-src="assets/htmls/female_subplot_fig.html"
+src="assets/plotly_figures/female_subplot_fig.html"
 width="1100"
-height="700"
+height="800"
 frameborder="0"
 >
 </iframe>
 <figcaption align="center"><em>Troponin Levels in Female Patients</em></figcaption>
 <br>
 
+---
+
 I also decided to look at CK-MB levels as well:
 
 <iframe
-src="assets/htmls/male_CKMB.html"
+src="assets/plotly_figures/male_CKMB.html"
 width="1100"
-height="700"
+height="800"
 frameborder="0"
 >
 </iframe>
@@ -123,11 +129,37 @@ frameborder="0"
 
 This visualization also showcases the pattern of increased CK-MB levels in patients with heart attacks, and lower levels with those who have not had heart attacks.
 
+---
+
+Lastly, I decided to check the distribution of heart attack results with respect to each patient's diagnosed "risk level":
+
+| Risk_Level   | Result   |   count |
+|:-------------|:---------|--------:|
+| High         | positive |     810 |
+| High         | negative |       2 |
+| Low          | negative |     275 |
+| Moderate     | negative |     232 |
+
+I was intrigued to identify that patients that have had heart attacks were diagnosed with a "High" risk level, but even more so that there were only two patients who had a "High" risk level **without** having a heart attack. I decided to look closer at those two patients, with their data shown below:
+
+|     |   Age |   Gender |   Heart rate |   Systolic blood pressure |   Diastolic blood pressure |   Blood sugar |   CK-MB |   Troponin | Result   | Risk_Level   | Recommendation              |
+|----:|------:|---------:|-------------:|--------------------------:|---------------------------:|--------------:|--------:|-----------:|:---------|:-------------|:----------------------------|
+|  29 |    63 |        1 |           66 |                       135 |                         55 |           166 |   0.493 |     10     | negative | High         | Immediate medical attention |
+| 209 |    60 |        1 |           68 |                        42 |                         64 |           106 |   0.879 |      0.426 | negative | High         | Immediate medical attention |
+
+An interesting note is that both patients are male and of similar age. Out of the two patients, patient 209 seemes to have lower troponin and CK-MB levels, which makes it a bit perplexing as to why they were diagnosed with a high risk level. This is particularly interesting as patient 29 displays a relatively high Troponin reading, which would indicate heart damage, and therefore rightfully be diagnosed with a "High" risk level. I decided that this is simply a limitation of the dataset - there could be several key features or nuanced information that made patient 209 also be diagnosed with a "High" risk level despite that information not necessarily being presented in the dataset. This realization will be vital when choosing my target variable when deciding my classification model, below.
+
 ## **Framing a Prediction Problem**
 
 ### Classification Ideas
+The size of the dataset only allows for two possible target variables: `Result` or `Risk_Level`. I initally thought that it would prove quite useful to make `Risk_Level` the target variable for the classification as **every** "High" diagnosis for the risk level was directly correlated to a "positive" Heart attack reading.
+
+However, from my analysis, I saw that all but two patients have a "false positive" reading, meaning that I cannot make this assumption anymore. This slightly decreased my desire to choose `Risk_Level` as the target variable because it would no longer support what would have been a very nice and useful pattern in this dataset (that being, every "High" diagnoses = "positive" heart attack). However, I still believed that the binary classification that would come from predicting the `Result` feature to be not as interesting of a classification problem that I could solve with this data. As a result, I decided to look at the `Risk_Level` feature as my target variable in my predictions, since **every** "High" risk level was always followed by a "Immediate medical attention" recommendation. 
+
+This is important because in the medical field, it is important to minimize type I errors (false negatives), and therefore is okay to have type II errors (false positives).
 
 ### Final Decision
+Predict `Risk_Level` in patients from the heart attack dataset.
 
 ## **Baseline Model**
 
