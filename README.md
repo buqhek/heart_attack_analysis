@@ -159,15 +159,48 @@ However, from my analysis, I saw that all but two patients have a "false positiv
 This is important because in the medical field, it is important to minimize type I errors (false negatives), and therefore is okay to have type II errors (false positives).
 
 ### Final Decision
-Predict `Risk_Level` in patients from the heart attack dataset.
+Predict `Risk_Level` in patients from the heart attack dataset. This is a multi-class classification problem, where the goal is to predict whether a patient should be diagnosed with a "High", "Moderate", or "Low" risk level depending on their vitals.
 
 ## **Baseline Model**
 
 #### Categorical
+- `'Result', 'Risk_Level'`
 
 #### Numerical
+- `'Age', 'Heart rate', 'Systolic blood pressure', 'Diastolic blood pressure', 'Blood sugar', 'CK-MB', 'Troponin'`
 
 ### Building the Preprocessing Pipeline
+For my numerical pipeline, I decided to use sklearn's `StandardScaler()` to standardize all numerical values to make regularization more effective. Additionally, I also added a `PolynomialFeatures()` transformer to help capture any non-linear relationships, which can help improve the model performance. I set the degree for the polynomial features to 1 as a start - it'll be a hyperparameter that I later tweak when I am testing different models.
+
+This is what my numerical preprocessor looks like:
+
+<iframe
+src="assets/pipelines/numerical_preprocessing.html"
+width="800"
+height="150"
+frameborder="0"
+>
+</iframe>
+
+For my categorical pipeline, I decided to use sklearn's `OneHotEncoder()` so my categorical data can be used by transforming each feature passed through my one hot encoder to become a collection of binary columns -- essentially making the data able for the model to interpret. Some special settings I used was setting `drop=True`, which drops one category from each feature that is passed through to make sure multicollinearity doesn't occur (several datasets showing the same information, making the coefficients of any model unstable). This works in a series of binary columns because when you drop one of them, that instance or "event" becomes implicitly true when for that row, all the other columns are set to "False" or "0". As a preventative measure, I also set `handle_unknown="ignore"`, which just transforms an unknown column to all zeros if the encoder doesn't know what it is given.
+
+This is what my categorical preprocessor looks like:
+
+<iframe
+ src="assets/pipelines/categorical_preprocessing.html"
+ width="800"
+ height="150"
+ frameborder="0"
+ ></iframe>
+
+Combining the numerical and categorical preprocessor, inside a column transformer, this is what the finished baseline preprocessor looks like:
+
+<iframe
+ src="assets/pipelines/preprocessing.html"
+ width="800"
+ height="175"
+ frameborder="0"
+ ></iframe>
 
 ### Building the Baseline Model
 
